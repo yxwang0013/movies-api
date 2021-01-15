@@ -20,11 +20,20 @@ router.post('/', async (req, res, next) => {
         });
     }
     if (req.query.action === 'register') {
-        await User.create(req.body).catch(next);
-        res.status(201).json({
-            code: 201,
-            msg: 'Successful created new user.',
-        });
+        const psd = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+        if (psd.test(req.body.password)) {
+            await User.create(req.body).catch(next);
+            res.status(201).json({
+                code: 201,
+                msg: 'Successful created new user.',
+            });
+        } else {
+            res.status(401).json({
+                code: 401,
+                msg: 'Password is illegal.',
+
+            });
+        }
     } else {
         const user = await User.findByUserName(req.body.username).catch(next);
         if (!user) return res.status(401).json({ code: 401, msg: 'Authentication failed. User not found.' });
@@ -59,14 +68,25 @@ router.put('/:id', (req, res, next) => {
 });
 
 //Add a favourite. No Error Handling Yet. Can add duplicates too!
-router.post('/:userName/favourites', async (req, res,) => {
-    const newFavourite = req.body.id;
-    const userName = req.params.userName;
-    const movie = await movieModel.findByMovieDBId(newFavourite);
-    const user = await User.findByUserName(userName);
-    await user.favourites.push(movie._id);
-    await user.save();
-    res.status(201).json(user);
+router.post('/:userName/favourites', async (req, res, next) => {
+    try {
+        const newFavourite = req.body.id;
+        const userName = req.params.userName;
+        const movie = await movieModel.findByMovieDBId(newFavourite);
+        const user = await User.findByUserName(userName);
+        if (user.favourites.indexOf(movie._id) !== -1) {
+            res.status(401).json({
+                code: 401,
+                msg: "Movie has already existed."
+            });
+        } else {
+            await user.favourites.push(movie._id);
+            await user.save();
+            res.status(201).json(user);
+        }
+    } catch (err) {
+        next(err);
+    }
 });
 
 router.get('/:userName/favourites', (req, res, next) => {
