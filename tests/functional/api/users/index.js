@@ -9,6 +9,9 @@ const expect = chai.expect;
 let db;
 //let api;
 let token;
+let specfiedUser;
+let movieId = 590706;
+
 
 const users = [
   {
@@ -103,4 +106,7 @@ describe("Users endpoint", () => {
         });
     });
   });
+
+  
+
 });

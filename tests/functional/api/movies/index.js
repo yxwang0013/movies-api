@@ -4,6 +4,9 @@ import api from "../../../../index";
 
 const expect = chai.expect;
 
+const currentMovieId = 590706 ;
+const currentMovieTitle = "Jiu Jitsu";
+
 //let api;
 let token;
 
@@ -11,6 +14,7 @@ const sampleMovie = {
   id: 337401,
   title: "Mulan",
 };
+
 
 describe("Movies endpoint", function () {
   // beforeEach(() => {
@@ -45,20 +49,35 @@ describe("Movies endpoint", function () {
     delete require.cache[require.resolve("../../../../index")];
   });
   describe("GET /movies ", () => {
-    it("should return 20 movies and a status 200", (done) => {
-      request(api)
-        .get("/api/movies")
-        .set("Accept", "application/json")
-        .set("Authorization", token)
-        .expect("Content-Type", /json/)
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body).to.be.a("array");
-          expect(res.body.length).to.equal(20);
-          done();
-        });
+    describe("when the token is valid", () => {
+      it("should check token and return the 20 movies", (done) => {
+        request(api)
+          .get("/api/movies")
+          .set("Accept", "application/json")
+          .set("Authorization", token)
+          .expect("Content-Type", /json/)
+          .expect(200)
+          .end((err, res) => {
+            expect(res.body).to.be.a("array");
+            expect(res.body.length).to.equal(20);
+            done();
+          });
+      });
+    });
+    describe("when the token is invalid", () => {
+      it("should return 401 and Unauthorized", (done) => {
+        request(api)
+          .get("/api/movies")
+          .set("Accept", "application/json")
+          .expect("Content-Type", /json/)
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      });
     });
   });
+
 
   describe("GET /movies/:id", () => {
     describe("when the id is valid", () => {
@@ -84,4 +103,6 @@ describe("Movies endpoint", function () {
       });
     });
   });
+  
+
 });
