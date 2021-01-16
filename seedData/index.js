@@ -1,7 +1,8 @@
 import userModel from '../api/users/userModel';
 import movieModel from '../api/movies/movieModel';
+import PeoplesModel from '../api/Peoples/PeoplesModel';
 import { movies } from './movies.js';
-
+import { getPeoples } from '../api/tmdb-api';
 
 const users = [
   {
@@ -35,5 +36,19 @@ export async function loadMovies() {
     console.info(`${movies.length} Movies were successfully stored.`);
   } catch (err) {
     console.error(`failed to Load movie Data: ${err}`);
+  }
+}
+
+export async function loadPeoples() {
+  console.log('load actors');
+  try {
+    getPeoples().then(async res => {
+      await PeoplesModel.deleteMany();
+      await PeoplesModel.collection.insertMany(res);
+      console.info(`${res.length} actor were successfully stored.`);
+
+    });
+  } catch (err) {
+    console.error(`failed to Load actor Data: ${err}`);
   }
 }
