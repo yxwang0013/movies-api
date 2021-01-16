@@ -3,6 +3,8 @@ import movieModel from '../api/movies/movieModel';
 import PeoplesModel from '../api/Peoples/PeoplesModel';
 import { movies } from './movies.js';
 import { getPeoples } from '../api/tmdb-api';
+import { getNow_playingMovies } from '../api/tmdb-api';
+import Now_playingModel from '../api/Now_playing/Now_playingModel';
 
 const users = [
   {
@@ -50,5 +52,19 @@ export async function loadPeoples() {
     });
   } catch (err) {
     console.error(`failed to Load actor Data: ${err}`);
+  }
+}
+
+export async function loadNow_playing() {
+  console.log('load Now_playing');
+  try {
+    getNow_playingMovies().then(async res => {
+      await Now_playingModel.deleteMany();
+      await Now_playingModel.collection.insertMany(res);
+      console.info(`${res.length} movies were successfully stored.`);
+
+    });
+  } catch (err) {
+    console.error(`failed to Load movies Data: ${err}`);
   }
 }
