@@ -1,0 +1,416 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "The Movies APP API Documentation",
+      "description": "My Movies APP API"
+    },
+    "basepath": "/",
+    "tags": [
+        {
+            "name": "Movie",
+            "description": "Movies routes"
+        },
+        {
+            "name": "People",
+            "description": "Peoples routes"
+        },
+        {
+            "name": "User",
+            "description": "User routes"
+        }
+    ],
+    "schemas": [
+        "http"
+      ],
+      "consumes": [
+        "application/json"
+      ],
+      "produces": [
+        "application/json"
+      ],
+
+    "paths": {
+        "/api/movie/{id}/reviews": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "parameters": [
+                    {
+                      "name": "reviews",
+                      "in": "path",
+                      "description": "The movie reviews",
+                      "required": "true",
+                      "type": "string"
+                    }
+                  ],
+                "summary": "Get specific movie in system",
+               
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                      },
+                      "401": {
+                        "description": "Unauthorized"
+                      },
+                      "500": {
+                        "description": "Not Found this movie"
+                    }
+                }
+            }
+        },
+        "/api/movies": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "parameters": [
+                    {
+                      "name": "id",
+                      "in": "path",
+                      "description": "The movie id",
+                      "required": "true",
+                      "type": "string"
+                    }
+                  ],
+                "summary": "Get all movies in system",
+               
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                      },
+                      "401": {
+                        "description": "Unauthorized"
+                      },
+                      "500":{
+                        "description": "return movie list"
+                    }
+                }
+            }
+        },
+        "/api/upcoming/{page}": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "parameters": [
+                    {
+                      "name": "page",
+                      "in": "path",
+                      "description": "The page number",
+                      "required": "true",
+                      "type": "string"
+                    }
+                  ],
+                "summary": "Get upcoming movies in system by page",
+               
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                      },
+                      "401": {
+                        "description": "Unauthorized"
+                      },
+                      "500":{
+                        "description": "not find this movie"
+                    }
+                }
+            }
+        },
+        "/api/top rated/{page}": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "parameters": [
+                    {
+                      "name": "page",
+                      "in": "path",
+                      "description": "The page number",
+                      "required": "true",
+                      "type": "string"
+                    }
+                  ],
+                "summary": "Get top rated movies in system by page",
+               
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                      },
+                      "401": {
+                        "description": "Unauthorized"
+                      },
+                      "500":{
+                        "description": "not find this movie"
+                    }
+                }
+            }
+        },
+        "/api/Now playing/{page}": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "parameters": [
+                    {
+                      "name": "page",
+                      "in": "path",
+                      "description": "The page number",
+                      "required": "true",
+                      "type": "string"
+                    }
+                  ],
+                "summary": "Get now playing movies in system by page",
+               
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                      },
+                      "401": {
+                        "description": "Unauthorized"
+                      },
+                      "500":{
+                        "description": "not find this movie"
+                    }
+                }
+            }
+        },
+        "/api/people": {
+            "get": {
+                "tags": [
+                    "People"
+                ],
+                "parameters": [
+                    {
+                      "name": "id",
+                      "in": "path",
+                      "description": "the people id",
+                      "required": "true",
+                      "type": "string"
+                    }
+                  ],
+                "summary": "Get all peoples in system",
+               
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                      },
+                      "401": {
+                        "description": "Unauthorized"
+                      },
+                      "500":{
+                        "description": "return peoplelist"
+                    }
+                }
+            }
+        },
+        "/api/people/id": {
+            "get": {
+                "tags": [
+                    "People"
+                ],
+                "parameters": [
+                    {
+                      "name": "id",
+                      "in": "path",
+                      "description": "the people id",
+                      "required": "true",
+                      "type": "string"
+                    }
+                  ],
+                "summary": "Get specific people in system",
+               
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                      },
+                      "401": {
+                        "description": "Unauthorized"
+                      },
+                      "500":{
+                        "description": "not this people"
+                    }
+                }
+            }
+        },
+        "/api/movie/delete": {
+            "delete": {
+                "tags": [
+                    "Movie"
+                ],
+                "summary": "delete the movie",
+                "description": "Auth",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "id",
+                        "name": "movie id",
+                        "description": "delete movie",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "sucess": true,
+                        "token": "value"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get all the user list",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/api/users/{$id}": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user by id",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "User id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Valid id"
+                    }
+                }
+            }
+        },
+        "/api/users?action=auth": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Post user data",
+                "description": "Auth",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User data",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "sucess": true,
+                        "token": "value"
+                    }
+                }
+            }
+        },
+        "/api/users/watchlist=auth": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Post user watchlist",
+                "description": "Auth",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User watchlist",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "sucess": true,
+                        "token": "value"
+                    }
+                }
+            }
+        },
+        "/api/users/{$username}/favourites": {
+          "post": {
+              "tags": [
+                  "User"
+              ],
+              "summary": "add favourtie movie",
+              "description": "Auth",
+              "produces": [
+                  "application/json"
+              ],
+              "parameters": [
+                  {
+                      "in": "body",
+                      "name": "body",
+                      "description": "movie",
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                     "description": "success"
+                  }
+              }
+          }
+        },
+        "/api/users/${username}/favourites": {
+          "get": {
+              "tags": [
+                  "User"
+              ],
+              "summary": "get favourtie movies",
+              "description": "Auth",
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "200": {
+                     "description": "movie list"
+                  }
+              }
+          }
+        }
+        
+        
+    }
+}
