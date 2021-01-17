@@ -96,4 +96,23 @@ router.get('/:userName/favourites', (req, res, next) => {
     ).catch(next);
 });
 
+router.post('/:userName/watchlist', async (req, res, next) => {
+    const newWatchList = req.body.id;
+    const userName = req.params.userName;
+    const movie = await movieModel.findByMovieDBId(newWatchList);
+    const user = await User.findByUserName(userName);
+    if (user.watchlist.includes(movie._id)) {
+        res.status(401).json({
+            code: 401,
+            msg: 'This movie has been added'
+        });
+    }
+    else {
+        await user.watchlist.push(movie._id);
+        await user.save();
+        res.status(201).json(user).catch(next);
+    }
+});
+
+
 export default router;

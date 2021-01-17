@@ -1,16 +1,16 @@
 import chai from "chai";
 import request from "supertest";
-const mongoose = require("mongoose");
 import User from "../../../../api/users/userModel";
 import api from "../../../../index";
 
+const mongoose = require("mongoose");
 const expect = chai.expect;
 
 let db;
-//let api;
+
 let token;
-let specfiedUser;
-let movieId = 590706;
+let id;
+
 
 
 const users = [
@@ -53,7 +53,7 @@ describe("Users endpoint", () => {
   });
   beforeEach(async () => {
     try {
-      //api = require("../../../../index");
+
       await User.deleteMany({});
       await User.collection.insertMany(users);
     } catch (err) {
@@ -106,7 +106,86 @@ describe("Users endpoint", () => {
         });
     });
   });
+  describe('PUT /:id ', () => {
+    before(() => {
+      return request(api)
+        .get("/api/users")
+        .set("Accept", "application/json")
+        .expect("Content-Type", /json/)
+        .expect(200)
+        .then((res) => {
+          const ids = res.body.map(user => user._id)
+          id = ids[0]
+        });
+    })
+    it('When id is invalid', () => {
+      return request(api)
+        .put("/api/users/123")
+        .set("Accept", "application/json")
+        .expect(500)
+    })
+    it('When id is valid and body is valid', () => {
+      return request(api)
+        .put(`/api/users/${id}`)
+        .set("Accept", "application/json")
+        .send({
+          username: 'user',
+          password: 'Aa111111111'
+        })
+        .expect(200)
+    })
+  })
 
-  
 
+
+  describe("POST /:username/favourites ", () => {
+    it("should return a 401 status with a invaild movie id", () => {
+      request(api)
+        .post(`/api/users/user1/favourites`)
+        .send({
+          id: "602211",
+        });
+      request(api)
+        .post(`/api/users/user1/favourites`)
+        .send({
+          id: "602211",
+        })
+        .expect(401);
+
+    });
+    it("should return a 201 status with a vaild movie id", () => {
+      request(api)
+        .post(`/api/users/user1/favourites`)
+        .send({
+          id: "729648",
+        })
+        .expect(201);
+
+    });
+  });
+
+  describe("POST /:username /watchlist ", () => {
+    it("should return a 401 status with a invaild movie id", () => {
+      request(api)
+        .post(`/api/users/user2/watchlist?action=register`)
+        .send({
+          id: "729648",
+        });
+      request(api)
+        .post(`/api/users/user2/watchlist?action=register`)
+        .send({
+          id: "729648",
+        })
+        .expect(401);
+    });
+
+    it("should return a 201 status with a vaild watchlist movie id", () => {
+      request(api)
+        .post(`/api/users/user2/watchlist?action=register`)
+        .send({
+          id: "602211",
+        })
+        .expect(201);
+    });
+  });
 });
