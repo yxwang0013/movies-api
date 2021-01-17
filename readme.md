@@ -222,10 +222,17 @@ I build the swagger document in Heroku and implement the swagger with the swagge
 
 ![][swagger1]
 ![][swagger2]
+<<<<<<< HEAD
 .  
+=======
+>>>>>>> develop
+# Assignment 2 - Agile Software Practice.
 
+Name: Yuxuan Wang
 
-ant to the creation of a suitable pipeline, e.g.
+## Target Web API.
+
+...... Document the Web API that is the target for this assignment's CI/CD pipeline. Include the API's endpoints and any other features relevant to the creation of a suitable pipeline, e.g.
 
 + Get /api/movies - returns an array of movie objects.
 + Get /api/movies/:id - returns detailed information on a specific movie.
