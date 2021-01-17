@@ -96,6 +96,14 @@ router.get('/:userName/favourites', (req, res, next) => {
     ).catch(next);
 });
 
+router.get('/:userName/watchlist', (req, res, next) => {
+    const userName = req.params.userName;
+    User.findByUserName(userName).populate('watchlist').then(
+        user => res.status(201).json(user.watchlist)
+    ).catch(next);
+});
+
+
 router.post('/:userName/watchlist', async (req, res, next) => {
     const newWatchList = req.body.id;
     const userName = req.params.userName;
