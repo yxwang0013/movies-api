@@ -4,11 +4,13 @@ import PeoplesModel from '../api/Peoples/PeoplesModel';
 import Now_playingModel from '../api/Now_playing/Now_playingModel';
 import UpcomingModel from '../api/Upcoming/UpcomingModel';
 import Top_ratedModel from '../api/Top_rated/Top_ratedModel';
+import SimilarModel from '../api/Similar/SimilarModel';
 import { movies } from './movies.js';
 import { getPeoples } from '../api/tmdb-api';
 import { getNow_playingMovies } from '../api/tmdb-api';
 import { getUpcomingMovies } from '../api/tmdb-api';
 import { getTop_ratedMovies } from '../api/tmdb-api';
+import { getSimilarMovies } from '../api/tmdb-api';
 
 const users = [
   {
@@ -51,7 +53,7 @@ export async function loadPeoples() {
     getPeoples().then(async res => {
       await PeoplesModel.deleteMany();
       await PeoplesModel.collection.insertMany(res);
-      console.info(`${res.length} actor were successfully stored.`);
+      console.info(`${res.length} actors were successfully stored.`);
 
     });
   } catch (err) {
@@ -65,7 +67,7 @@ export async function loadNow_playing() {
     getNow_playingMovies().then(async res => {
       await Now_playingModel.deleteMany();
       await Now_playingModel.collection.insertMany(res);
-      console.info(`${res.length} movies were successfully stored.`);
+      console.info(`${res.length} now_playing movies were successfully stored.`);
 
     });
   } catch (err) {
@@ -79,7 +81,7 @@ export async function loadUpcoming() {
     getUpcomingMovies().then(async res => {
       await UpcomingModel.deleteMany();
       await UpcomingModel.collection.insertMany(res);
-      console.info(`${res.length} movies were successfully stored.`);
+      console.info(`${res.length} upcoming movies were successfully stored.`);
 
     });
   } catch (err) {
@@ -93,7 +95,21 @@ export async function loadTop_rated() {
     getTop_ratedMovies().then(async res => {
       await Top_ratedModel.deleteMany();
       await Top_ratedModel.collection.insertMany(res);
-      console.info(`${res.length} movies were successfully stored.`);
+      console.info(`${res.length} top_rated movies were successfully stored.`);
+
+    });
+  } catch (err) {
+    console.error(`failed to Load movies Data: ${err}`);
+  }
+}
+
+export async function loadSimilar() {
+  console.log('load Similar');
+  try {
+    getSimilarMovies().then(async res => {
+      await SimilarModel.deleteMany();
+      await SimilarModel.collection.insertMany(res);
+      console.info(`${res.length} similar movies were successfully stored.`);
 
     });
   } catch (err) {

@@ -4,10 +4,9 @@ import api from "../../../../index";
 
 const expect = chai.expect;
 
-const currentMovieId = 590706 ;
-const currentMovieTitle = "Jiu Jitsu";
+const currentMovieId = 590706;
 
-//let api;
+
 let token;
 
 const sampleMovie = {
@@ -17,13 +16,6 @@ const sampleMovie = {
 
 
 describe("Movies endpoint", function () {
-  // beforeEach(() => {
-  //   try {
-  //     api = require("../../../../index");
-  //   } catch (err) {
-  //     console.error(`failed to Load user Data: ${err}`);
-  //   }
-  // });
   this.timeout(6400);
   before((done) => {
     setTimeout(() => {
@@ -45,7 +37,7 @@ describe("Movies endpoint", function () {
   });
 
   afterEach(() => {
-    api.close(); // Release PORT 8080
+    api.close();
     delete require.cache[require.resolve("../../../../index")];
   });
   describe("GET /movies ", () => {
@@ -103,6 +95,34 @@ describe("Movies endpoint", function () {
       });
     });
   });
-  
 
+  describe("GET /movies/:id/reviews", () => {
+
+    it("should return the matching movie reviews", () => {
+      return request(api)
+        .get(`/api/movies/${sampleMovie.id}/reviews`)
+        .set("Accept", "application/json")
+        .set("Authorization", token)
+        .expect("Content-Type", /json/)
+        .expect(200)
+        .then((res) => {
+          expect(res.body).to.be.a("array");
+          expect(res.body.length).to.equal(2);
+
+
+        });
+    });
+
+  });
+
+  describe("Delete /movies/:id", () => {
+    describe("when the movie exists", () => {
+      it("should return 200 and delete successfully", () => {
+        return request(api)
+          .delete(`/api/movies/${currentMovieId}`)
+          .set("Accept", "application/json")
+          .set("Authorization", token)
+      });
+    })
+  });
 });
