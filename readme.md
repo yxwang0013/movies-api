@@ -4,6 +4,7 @@ Name: Yuxuan Wang
 
 ## Features.
 
+
 ...... A bullet-point list of the ADDITIONAL features you have implemented in the API **THAT WERE NOT IN THE LABS** ......,
  
  + Feature 1 - users can get a list of movies 
