@@ -7,46 +7,18 @@ Name: Yuxuan Wang
 
 ...... A bullet-point list of the ADDITIONAL features you have implemented in the API **THAT WERE NOT IN THE LABS** ......,
  
- + Feature 1 - users can get a list of movies 
- + Feature 2 - users can get the specific movie by id
- + Feature 3 - users can update the movie by id
- + Feature 4 - users can delete the movie by id
- + Feature 5 - users can get all reviews for movie
- + Feature 6 - users can create a new review for movie
- + Feature 7 - users can get a list of genres
- + Feature 8 - users can get a list of nowplaying movies
- + Feature 9 - users can get the nowplaying movie by id
- + Feature 10 - users can update the nowplaying movie by id
- + Feature 11 - users can delete the nowplaying movie by id
- + Feature 12 - users can get a list of famous peoples
- + Feature 13 - users can get the specific people by id
- + Feature 14 - users can get a list of top_rated movies
- + Feature 15 - users can get the top_rated movie by id
- + Feature 16 - users can update the top_rated movie by id
- + Feature 17 - users can delete the top_rated movie by id
- + Feature 18 - users can get a list of upcoming movies
- + Feature 19 - users can get the upcoming movie by id
- + Feature 20 - users can update the upcoming movie by id
- + Feature 21 - users can delete the upcoming movie by id
- + Feature 22 - users can get all his information
- + Feature 23 - users can register or authenticate a user
- + Feature 24 - users can update its information by id
- + Feature 25 - users can get his favourite movie list
- + Feature 26 - users can update his favourite movie list
- + Feature 27 - users can get his watchlist
- + Feature 28 - users can update his watchlist
+ + Feature 1 - More than 3 new API routes, including a parameterised URL 
+ + Feature 2 - Mongo integration
+ + Feature 3 - React integration
+ + Feature 4 - Basic Authentication and protected routes
+ + Feature 5 - Good use of express middleware, for example: error handling
+ + Feature 6 - Custom validation using Mongoose
+ + Feature 7 - API documentation - Swagger
+
 
 ## Installation Requirements
 
 Describe what needs to be on the machine to run the API (Node v?, NPM, MongoDB instance, any other 3rd party software not in the package.json). 
-
-Describe getting/installing the software, perhaps:
-
-```bat
-git clone https://github.com/yxwang0013/movies-api.git
-```
-
-followed by installation
 
 ```bat
 git install swagger-ui express
@@ -101,7 +73,6 @@ If you have your API design on an online platform or graphic, please link to it 
 Give details of authentication/ security implemented on the API(e.g. passport/sessions). Indicate which routes are protected.
 
 ```bat
-~~~Javascript
 import passport from 'passport';
 import passportJWT from 'passport-jwt';
 import UserModel from './api/users/userModel';
@@ -128,9 +99,37 @@ passport.use(strategy);
 
 export default passport;
 
-~~~
+
+
+ const user = await User.findByUserName(req.body.username).catch(next);
+        if (!user) return res.status(401).json({ code: 401, msg: 'Authentication failed. User not found.' });
+        user.comparePassword(req.body.password, (err, isMatch) => {
+            if (isMatch && !err) {
+                // if user is found and password is right create a token
+                const token = jwt.sign(user.username, process.env.SECRET);
+                // return the information including token as JSON
+                res.status(200).json({
+                    success: true,
+                    token: 'BEARER ' + token,
+                });
+            } else {
+                res.status(401).json({
+                    code: 401,
+                    msg: 'Authentication failed. Wrong password.'
+                });
+            }
+        });
 ```
 
+Protected routes:
++ Get /api/movies/{movieid}
++ Get /api/movies/{movieid}/reviews
++ Delete /api/movies/{movieid}
++ Get /api/Now_playing/{Now_playingid}
++ Get /api/Top_rated/{Top_ratedid}
++ Get /api/Upcoming/{Upcomingid}
++ Post /api/users/:username/favourites
++ Post /api/users/:username/watchlist
 
 ## Integrating with React App
 
@@ -189,20 +188,40 @@ export const getPeoples = () => {
 };
 ~~~
 
+React App repo: https://github.com/yxwang0013/wad2-moviesApp
+
 ## Extra features
 
 . . Briefly explain any non-standard features, functional or non-functional, developed for the app.  
 
-I build the swagger document in Heroku and implement the swagger with the swagger in this assignment
+Custom password verification. The password set during user registration must have letters and numbers and more than five digits, otherwise registration fails
 
-![][swagger1]
-![][swagger2]
+```bat
+if (req.query.action === 'register') {
+        const psd = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+        if (psd.test(req.body.password)) {
+            await User.create(req.body).catch(next);
+            res.status(201).json({
+                code: 201,
+                msg: 'Successful created new user.',
+            });
+        } else {
+            res.status(401).json({
+                code: 401,
+                msg: 'Password is illegal.',
+
+            });
+        }
+```
 
 ## Independent learning.
 
 . . State the non-standard aspects of React/Express/Node (or other related technologies) that you researched and applied in this assignment . .  
 
+I build the swagger document in Heroku and implement the swagger with the swagger in this assignment
 
+![][swagger1]
+![][swagger2]
 
 # Assignment 2 - Agile Software Practice.
 
