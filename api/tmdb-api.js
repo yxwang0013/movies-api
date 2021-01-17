@@ -38,8 +38,22 @@ export const getPeoples = () => {
 };
 export const getNow_playingMovies = () => {
     return fetch(
-      `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMDB_KEY}&language=en-US&page=1`
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMDB_KEY}&language=en-US&page=1`
     )
-      .then(res => res.json())
-      .then(json => json.results);
-  };
+        .then(res => res.json())
+        .then(json => json.results);
+};
+export const getUpcomingMovies = () => {
+    return fetch(
+        `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.TMDB_KEY}`
+    )
+        .then(res => res.json())
+        .then(json => json.results);
+};
+export const getTop_ratedMovies = () => {
+    return fetch(
+        `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.TMDB_KEY}&language=en-US&page=1`
+    )
+        .then(res => res.json())
+        .then(json => json.results);
+};

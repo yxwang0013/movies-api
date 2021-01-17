@@ -1,6 +1,6 @@
 import session from 'express-session';
 import passport from './authenticate';
-import {loadUsers, loadMovies, loadPeoples,loadNow_playing} from './seedData';
+import { loadUsers, loadMovies, loadPeoples, loadNow_playing, loadUpcoming, loadTop_rated } from './seedData';
 import './db';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -10,6 +10,8 @@ import bodyParser from 'body-parser';
 import usersRouter from './api/users';
 import PeoplesRouter from './api/Peoples';
 import Now_playingRouter from './api/Now_playing';
+import UpcomingRouter from './api/Upcoming';
+import Top_ratedRouter from './api/Top_rated';
 import loglevel from 'loglevel';
 
 
@@ -20,12 +22,14 @@ if (process.env.SEED_DB) {
   loadMovies();
   loadPeoples();
   loadNow_playing();
+  loadUpcoming();
+  loadTop_rated();
 }
 
 const errHandler = (err, req, res,) => {
   /* if the error in development then send stack trace to display whole error,
   if it's in production then just send error message  */
-  if(process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     return res.status(500).send(`Something went wrong!`);
   }
   res.status(500).send(`Hey!! You caught the error 👍👍, ${err.stack} `);
@@ -49,12 +53,14 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(passport.initialize());
-app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+app.use('/api/movies', passport.authenticate('jwt', { session: false }), moviesRouter);
 app.use('/api/genres', genresRouter);
 //Users router
 app.use('/api/users', usersRouter);
 app.use('/api/Peoples', PeoplesRouter);
 app.use('/api/Now_playing', Now_playingRouter);
+app.use('/api/Upcoming', UpcomingRouter);
+app.use('/api/Top_rated', Top_ratedRouter);
 app.use(errHandler);
 
 
