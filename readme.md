@@ -222,10 +222,7 @@ I build the swagger document in Heroku and implement the swagger with the swagge
 
 ![][swagger1]
 ![][swagger2]
-<<<<<<< HEAD
-.  
-=======
->>>>>>> develop
+
 # Assignment 2 - Agile Software Practice.
 
 Name: Yuxuan Wang
