@@ -97,7 +97,6 @@ describe("Movies endpoint", function () {
   });
 
   describe("GET /movies/:id/reviews", () => {
-
     it("should return the matching movie reviews", () => {
       return request(api)
         .get(`/api/movies/${sampleMovie.id}/reviews`)
@@ -116,13 +115,11 @@ describe("Movies endpoint", function () {
   });
 
   describe("Delete /movies/:id", () => {
-    describe("when the movie exists", () => {
       it("should return 200 and delete successfully", () => {
         return request(api)
           .delete(`/api/movies/${currentMovieId}`)
           .set("Accept", "application/json")
           .set("Authorization", token)
       });
-    })
   });
 });
